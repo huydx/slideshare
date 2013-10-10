@@ -134,7 +134,7 @@ module SlideShare
       total_slides = oembed_result["total_slides"]
 
       raise SlideDoesNotContainImageUrl unless suffix && slide_image_baseurl
-      {suffix: suffix, total_slides: total_slides}
+      {prefix: slide_image_baseurl, suffix: suffix, total_slides: total_slides}
     end
 
   private
