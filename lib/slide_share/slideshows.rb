@@ -122,7 +122,7 @@ module SlideShare
       true # This might be too naïve but should have already raised exception if unsuccessful
     end
 
-    def images_from_url(slide_url)
+    def images_info_from_url(slide_url)
       begin
         oembed_result = base.send(:get_obembed, slide_url, format: 'xml')["oembed"]
       rescue Exception => e
