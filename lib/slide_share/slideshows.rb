@@ -59,8 +59,8 @@ module SlideShare
       detailed = convert_to_number(options.delete(:detailed))
       options[:detailed] = detailed unless detailed.nil?
       ret = api_result = base.send :get, "/get_slideshow", options.merge(:slideshow_id => id)
-      if options[:full_image]
-        ret = {info: api_result, images: self.images_from_url(api_result["Slideshow"]["URL"])}
+      if options[:with_image]
+        ret = {info: api_result, image_info: self.images_info_from_url(api_result["Slideshow"]["URL"])}
       end
       ret
     end
@@ -76,13 +76,13 @@ module SlideShare
       options[:detailed] = detailed unless detailed.nil?
 
       ret = api_result = base.send :get, "/get_slideshows_by_user", options.merge(:username_for => user)
-      if options[:full_image] 
+      if options[:with_image] 
         slides_info = api_result["User"]["Slideshow"] rescue []
         slides_images_array = 
           slides_info.map { |slide_info| 
             {
               info: slide_info,
-              images: self.images_from_url(slide_info["URL"]),
+              image_info: self.images_info_from_url(slide_info["URL"]),
             }
           } 
         ret = slides_images_array
@@ -134,11 +134,7 @@ module SlideShare
       total_slides = oembed_result["total_slides"]
 
       raise SlideDoesNotContainImageUrl unless suffix && slide_image_baseurl
-      image_array = []
-      (1..total_slides).each do |i|
-        image_array << slide_image_baseurl + i.to_s + suffix
-      end
-      return image_array
+      {suffix: suffix, total_slides: total_slides}
     end
   
   private
