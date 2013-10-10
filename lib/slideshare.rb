@@ -5,6 +5,7 @@ require "curb"
 require "slide_share/errors"
 require "slide_share/base"
 require "slide_share/slideshows"
+require "slide_share/leads"
 
 unless Array.new.respond_to?(:extract_options!)
   # Via ActiveSupport
